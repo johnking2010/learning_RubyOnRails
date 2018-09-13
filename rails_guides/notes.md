@@ -30,24 +30,24 @@ Learning **Ruby**:
 Check for prequisites - Ruby (v2.2.2+), SQLite3
 
 ```
-ruby -v
+$ ruby -v
 ```
 `ruby 2.4.2p198 (2017-09-14 revision 59899) [x86_64-darwin15]`
 
 ```
-sqlite3 --version
+$ sqlite3 --version
 ```
 `3.8.10.2 2015-05-20 18:17:19 2ef4f3a5b1d1d0c4338f8243d40a2452cc1f7fe4`
 
 - To install Rails, use the `gem install` command (from RubyGems):
 
 ```
-gem install rails
+$ gem install rails
 ```
 verify: (should be ~Rails v5.1.1)
 
 ```
-rails --version
+$ rails --version
 ```
 `Rails 5.2.1`
 
@@ -58,16 +58,16 @@ rails --version
 -new application generator -> scaffolds a fresh Rails app automatically.
 
 ```
-rails new blog
+$ rails new blog
 ```
 - Creates a Rails app called 'Blog' in a `blog` directory, + installs gem dependencies (from *Gemfile* using `bundle install`).
 
-- ** `rails new -h` (shows all command line options that Rails application builder accetps)
+- ** `rails new -h` (shows all command line options that Rails application builder accepts)
 
 - change into the `/blog` directory:
 
 ```
-cd blog
+$ cd blog
 ```
 
 - `/blog` contents:
@@ -75,16 +75,56 @@ cd blog
 ```
 $ ls
 Gemfile		app		db		public		vendor
-Gemfile.lock	bin		lib		storage
+Gemfile.lock	bin		lib		storagerails_guides/blog/
 README.md	config		log		test
 Rakefile	config.ru	package.json	tmp
 ```
 ---
-**Important**: `rails new -h`
-- lists all flag options for new Rails app
+**Important**: 
 
 To create new app **WITHOUT** automatically initialising git: 
 ```
-rails new blog --skip-git
+$ rails new blog --skip-git
 ```
+(from: http://railsapps.github.io/rails-git.html)
+
+.gitignore:
+
+rails_guides/blog/.bundle
+
+rails_guides/blog/db/*.sqlite3
+
+rails_guides/blog/log/*.log
+
+rails_guides/blog/tmp/
+
+rails_guides/blog/.DS_Store
+
 ---
+
+### Folder structure + roles of each:
+
+TODO! [14-09-18]
+
+---
+
+From within the `/blog` folder, run
+
+```
+$ bin/rails server
+```
+yields:
+
+```
+=> Booting Puma
+=> Rails 5.2.1 application starting in development 
+=> Run `rails server -h` for more startup options
+Puma starting in single mode...
+* Version 3.12.0 (ruby 2.4.2-p198), codename: Llamas in Pajamas
+* Min threads: 5, max threads: 5
+* Environment: development
+* Listening on tcp://0.0.0.0:3000
+Use Ctrl-C to stop
+```
+
+- Go to http://localhost:3000/
