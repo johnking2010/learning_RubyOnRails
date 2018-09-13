@@ -89,17 +89,13 @@ $ rails new blog --skip-git
 (from: http://railsapps.github.io/rails-git.html)
 
 .gitignore:
-
+```
 rails_guides/blog/.bundle
-
 rails_guides/blog/db/*.sqlite3
-
 rails_guides/blog/log/*.log
-
 rails_guides/blog/tmp/
-
 rails_guides/blog/.DS_Store
-
+```
 ---
 
 ### Folder structure + roles of each:
@@ -128,3 +124,12 @@ Use Ctrl-C to stop
 ```
 
 - Go to http://localhost:3000/
+
+---
+---
+
+### "Hello" Rails
+
+- create a *controller*
+- create a *view*
+-
