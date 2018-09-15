@@ -653,7 +653,7 @@ They would be 'mass assigned' into your model and then into the database along w
 @article = Article.new(params.require(:article).permit(:title, :text))
 ```
 
-THis is often factored out into its own method so it can be reused by multiple actions in the same controller, for example `create` and `update`.Above and beyond mass assignment issues, the method is often made `private` to make sure it *can't* be called outside its intended context. Here is the result:
+This is often factored out into its own method so it can be reused by multiple actions in the same controller, for example `create` and `update`.Above and beyond mass assignment issues, the method is often made `private` to make sure it *can't* be called outside its intended context. Here is the result:
 
 ```
 def create
@@ -671,6 +671,10 @@ private
 
 !!! - for more information refer to the reference above and this blog article about Strong Parameters: http://weblog.rubyonrails.org/2012/3/21/strong-parameters/
 
+
+
+### Showing Articles:
+
 - Try submitting the form, yields error relating to the `show` action for `ArticlesController`
 
 ```
@@ -678,5 +682,53 @@ Unknown action
 The action 'show' could not be found for ArticlesController
 ```
 
-### Showing Articles:
+- Adding `show` before proceeding
+- As seen in the output of `bin/rails routes`, the route for `show` action is:
 
+
+| Prefix | Verb | URI Pattern | Controller#Action |
+|---------------|--------|------------------------------|-------------------|
+| article | GET | /articles/:id(.:format) | articles#show |
+
+- The special syntax `:id` tells us that this route expects an `:id` parameter, which in our case will be the id of the article.
+- As before, we need to add the `show` action in `app/controllers/articles_controller.rb` and its respective view.
+
+!!! - A frequent practice is to place the standard **CRUD** actions in each controller in the following order: `index`, `show`, `new`, `edit`, `create`, `update` and `destroy`. 
+You may use any order you choose, but keep in mind that these are **public** methods; as mentioned earlier in this guide, they must be placed *before* declaring **private** visibility in the controller.
+
+Given that, let's add the `show` action, as follows:
+
+```
+class ArticlesController < ApplicationController
+    def show
+        @article = Article.find(params[:id])
+    end
+
+    ...
+
+end
+```
+
+- Things to note:
+    - We use `Article.find` to find the article that we're interested in, passing in `params[:id]` to get the `:id` parameter from the request.
+    - We also use an *instance* variable (prefixed with `@`) to hold a reference to the article object. We do this because Rails will pass **all** instance variables to the view.
+
+- Now, create a new file `app/views/articles/show.html.erb` with the following content:
+
+```
+<p>
+    <strong>Title:</strong>
+    <%= @article.title %>
+</p>
+
+<p>
+    <strong>Text:</strong>
+    <%= @article.text %>
+</p>
+```
+
+- The above should **FINALLY** enable the creation of new articles!
+- Try it: http://localhost:3000/articles/new
+- Yields:
+
+---
