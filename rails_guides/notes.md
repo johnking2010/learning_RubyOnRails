@@ -389,3 +389,80 @@ ArticlesController#new is missing a template for this request format and variant
 - The **route**, **controller**, **action** and **view** are now working harmoniously!
 - Time to create the form for the new article...  
 ---
+
+### The first form:
+
+- To create a form with this template, use a *form builder*
+- The primary form builder for Rails is provided by a helper method called `form_with`.
+- Add the following into `app/views/articles/new.html.erb`:
+
+```
+<%= form_with scope: :article, local: true do |form| %>
+    <p>
+        <%= form.label :title %><br>
+        <%= form.text_field :title %>
+    </p>
+
+    <p>
+        <%= form.label :text %><br>
+        <%= form.text_area :text %>
+    </p>
+
+    <p>
+        <%= form.submit %>
+    </p>
+<% end %>
+```
+
+- Refresh the page: form should be visible!
+- Building forms with Rails is as easy as above.
+- When calling `form_with`, an identifying scope for this form must be passed. In this case, the **symbol** `:article`. 
+    - This tells the `form_with` helper what this form is for.
+    - Inside the block for this method, the `FormBuilder` object (represented by `form`) is used to build two **labels** and two **text fields** (one each for the title and text of an article).
+    - Finally, the call to `submit` on the `form` object will create a submit button for the form.
+
+- One problem with this form...
+- If you inspect the HTML that is generated (by viewing the source of the page), you will see that the `action` attribute for the form is pointing at `articles/new`.
+- This is a problem because this route goes to the very page that you're on right now, and that route should **only** be used to display the form for a **new** article.
+
+- The form needs to use a different URL in order to go somewhere else.
+- This can be done quie simply with the `:url` option of `form_with`
+- Typically in Rails, the action that is used for new form submissions like this is called "create", and so the form should be pointed to that action.**
+- Edit the `form_with` line inside `app/views/articles/new.html.erb` to also include `url: articles_path` , appearing as: 
+
+```
+<%= form_with scope: :article, url: articles_path, local: true do |form| %>
+```
+
+- In the above, the `articles_path` helper is passed to the `url:` option.
+TO see what Rails will do with this, we look back at the output of `$ bin/rails routes`: 
+
+
+| Prefix | Verb | URI Pattern | Controller#Action |
+|---------------|--------|------------------------------|-------------------|
+|  |  |  |  |
+| welcome_index | GET | /welcome/index(.:format) | welcome#index |
+| articles | GET | /articles(.:format) | articles#index |
+|  | POST | /articles(.:format) | articles#create |
+| new_article | GET | /articles/new(.:format) | articles#new |
+| edit_article | GET | /articles/:id/edit(.:format) | articles#edit |
+| article | GET | /articles/:id(.:format) | articles#show |
+|  | PATCH | /articles/:id(.:format) | articles#update |
+|  | PUT | /articles/:id(.:format) | articles#update |
+|  | DELETE | /articles/:id(.:format) | articles#destroy |
+| root | GET | / | welcome#index |
+
+- The `articles_path` helper tells Rails to point the form to the URI Pattern associated with the `articles` prefix; and the form will (by default) send a POST request to that route.
+- This is associated with the `create` action of the current controller, the `ArticlesController`.
+
+- With the form and its associated route defined, you will be able to fill in the form and then click the submit button to begin the process of creating a new article (TRY IT).
+- On submitting the form, you should be presented with a familiar error:
+
+```
+Unknown action
+The action 'create' could not be found for ArticlesController
+```
+
+- You **must** create the `create` action within the `ArticlesCOntroller` for this to work.
+
+- [By default, `form_with` submits forms using Ajax, thereby skipping full page redirects. TO make this guide easier to get into we've disabled that with `local: true` for now ]
