@@ -466,3 +466,88 @@ The action 'create' could not be found for ArticlesController
 - You **must** create the `create` action within the `ArticlesCOntroller` for this to work.
 
 - [By default, `form_with` submits forms using Ajax, thereby skipping full page redirects. TO make this guide easier to get into we've disabled that with `local: true` for now ]
+
+---
+
+### Creating Articles:
+
+TO make the "Unknown action" go away, you can define a `create` action within the `ArticlesController` class in `app/controllers/articles_controller.rb`, underneath the `new` action, as shown:
+
+```
+class ArticlesController < ApplicationController
+    def new
+    end
+
+    def create
+    end
+end
+```
+
+- If you re-submit the form now, you may not see any change on the page. Don't worry! This is because Rails by default returns `204 No Content` response for an action IF we don't specify what the response should be.
+- We just added the `create` action but didn't specify anything about how the respnse should be.
+- In this case, the `create` action should save our new article to the **database**.
+
+- When a form is submitted, the fields of the form are sent to Rails as *parameters*.
+- These parameters can then be referenced inside the controller actions, typically to perform a particular task.
+- To see what these parameters look like, change the `create` action to this:
+
+```
+def create
+    render plain: params[:article].inspect
+end
+```
+
+- The `render` method here is taking a very simple hash with a key of `:plain` and a value of `params[:article].inspect`.
+- The `params` method is the object which represents the parameters (or fileds) coming in from the form.
+- The `params` method returns an `ActionController::Parameters` object, which allows you to access the keys of the hash using *either* strings **or** symbols.
+- In this situation, the only parameters that matter are the ones from the form.
+
+- !!! Ensure that you have a firm grasp of the `params` method, as you'll use it fairly regularly. Let's consider an example URL: http://www.example.com/?username=dhh&email=dhh@email.com. In this URL, `params[:username]` would equal "dhh" and `params[:email]` would equal "dhh@email.com".
+
+- If you resubmit the form one more time, you'll see somthing that looks like the following:
+
+```
+<ActionController::Parameters {"title"=>"First Article", "text"=>"actually took quite a while, all the markdown writing I'm guessing..."} permitted: false>
+```
+
+- The action is now displaying the parameters for the article that are coming from the form.
+- However, this isn't really all that helpful. Yes, you can see the parameters but nothing in particular is being done with them.
+
+---
+
+### Creating the Article model:
+
+- Models in Rails use a singular name, and their corresponding database tables use a plural name.
+- Rails provides a generator for creating models, which most Rails developers tend to usewhen creating new models.
+To create the new model, run the following command:
+
+```
+$ bin/rails generate model Article title:string text:text
+```
+
+- yields:
+
+```
+Running via Spring preloader in process 26943
+      invoke  active_record
+      create    db/migrate/20180915151319_create_articles.rb
+      create    app/models/article.rb
+      invoke    test_unit
+      create      test/models/article_test.rb
+      create      test/fixtures/articles.yml
+```
+
+- With that command we told Rails that we want an `Article` model, together with a **title** attribute of type string, and a **text** attribute of type text.
+- Those attributes are automatically added to the `articles` table in the database and mapped to the `Article` model.
+
+- Rails responded by creating a bunch of files.
+- For now, we're only interested in:
+    - `app/models/article.rb` and
+    - `db/migrate/20180915151319_create_articles.rb`
+- The latter is responsible for creating the database structure, which is what we'll look at next.
+
+- [!!! Active Recordd is smart enough to automatically map column names to model attributes, which means you don't have to *declare* attributes inside Rails models, as that will be done automatically by Active Record]
+
+---
+
+### Running a Migration:
