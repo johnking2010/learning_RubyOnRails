@@ -1,5 +1,5 @@
 
-
+################
 # re 'blog' app:
 rails_guides/blog/.bundle
 rails_guides/blog/db/*.sqlite3
