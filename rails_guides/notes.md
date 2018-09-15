@@ -234,3 +234,64 @@ end
 These mappings were created automatically earlier on running the controller generator (`bin/rails generate controller Welcome index`).
 
 - Launch the web server again to see these changes take effect!
+- INDICATES: this new **route** is actually going to `WelcomeController`'s index *action*, rendering the *view* correctly.
+
+[Further routing info: https://guides.rubyonrails.org/routing.html]
+
+---
+### Getting Up + Running:
+
+So far created:
+- a **controller**
+- an **action**
+- a **view**
+
+Next, something more substantial:
+
+- a new **resource** within the `blog` applicaiton.
+
+A 'resource'  describes a collection of similar objects (articles, people or animals).
+Possbile to **C**reate, **R**ead, **U**pdate and **D**estroy (**CRUD** operations) items for a resource.
+
+- Rails provides a `resources` method, can be used to delare a standard REST resource
+-Must add the *article resource* to the `config/routes.rb`,fhould llok like:
+
+```
+Rails.application.routes.draw do
+    get 'welcome/index'
+
+    resources :articles
+
+    root 'welcome#index'
+end
+```
+
+- run `$ bin/rails routes`
+- will show defined routes for all stadard RESTful actions:
+
+| Prefix | Verb | URI Pattern | Controller#Action |
+|---------------|--------|------------------------------|-------------------|
+|  |  |  |  |
+| welcome_index | GET | /welcome/index(.:format) | welcome#index |
+| articles | GET | /articles(.:format) | articles#index |
+|  | POST | /articles(.:format) | articles#create |
+| new_article | GET | /articles/new(.:format) | articles#new |
+| edit_article | GET | /articles/:id/edit(.:format) | articles#edit |
+| article | GET | /articles/:id(.:format) | articles#show |
+|  | PATCH | /articles/:id(.:format) | articles#update |
+|  | PUT | /articles/:id(.:format) | articles#update |
+|  | DELETE | /articles/:id(.:format) | articles#destroy |
+| root | GET | / | welcome#index |
+
+- (meaning of prefix colums to be explained later)
+- Notice that Rails has *inferred* the singular form(?from?) `article` + makes meaningful use of the decision.
+
+- NEXT:
+    - add the ability to create *new* articles in the application + view them!
+    - **C**reate & **R**ead (part of CRUD), via a basic form (title/text/Save Article).
+
+---
+
+### Laying down the groundwork:
+
+
