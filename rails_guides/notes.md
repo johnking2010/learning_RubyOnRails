@@ -797,9 +797,29 @@ end
 
 - You can now **create**, **show**, and **list** articles.
 - Let's add some **links** to navigate through pages
-- Open `app/voew/welcome/index.html.erb` and modify it as follows:
+- Open `app/views/welcome/index.html.erb` and modify it as follows:
 
 ```
 <h1>Hello Rails!</h1>
 <%= link_to 'My Blog', controller: 'articles'  %>
+```
+
+- The `link_to` method is one of Rails' built-in view helpers. 
+- It creates a hyperlink based on text to **display** and where to **go** - in this case, to the path for the articles.
+
+Lets add links to the other *views* as well, starting with adding this "New Article" link to `app/views/articles/index.html.erb`, placing it above the table tag:
+
+```
+<%= link_to 'New_Article', new_article_path %>
+```
+The above will allow you to bring up the **form** that allows you to create a new article. 
+
+Now, add another link in `app/views/articles/new.html.erb` underneath the form, to go back to the `index` action:
+
+```
+<%= form_with scope: :article, url: articles_path, local: true do |form| %>
+...
+<% end %>
+
+<%= link_to 'Back', articles_path %>
 ```
