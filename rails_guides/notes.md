@@ -795,3 +795,11 @@ end
 
 ### Adding links:
 
+- You can now **create**, **show**, and **list** articles.
+- Let's add some **links** to navigate through pages
+- Open `app/voew/welcome/index.html.erb` and modify it as follows:
+
+```
+<h1>Hello Rails!</h1>
+<%= link_to 'My Blog', controller: 'articles'  %>
+```
