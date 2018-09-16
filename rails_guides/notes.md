@@ -731,4 +731,67 @@ end
 - Try it: http://localhost:3000/articles/new
 - Yields:
 
+--- 
+
+**Title:** First Article
+
+**Text:** The first article in the db!
+
 ---
+
+### Listing all articles:
+
+We still need a way to list **all** our articles, so let's do that. The route for this is as per output of `bin/rails routes`:
+
+| Prefix | Verb | URI Pattern | Controller#Action |
+|---------------|--------|------------------------------|-------------------|
+| articles | GET | /articles/(.:format) | articles#index |
+
+- Add the corresponding `index` action for that route inside the `ArticlesController` in the `app/controllers/articles_controller.rb` file.
+- When we write an `index` action, the usual practice is to place it as the first method in the controller. Let's do it:
+
+```
+class ArticlesController < ApplicationController
+    def index
+        @articles = Article.all
+    end
+
+    def show
+        @article = Article.find(params([:id])
+    end
+
+    def new
+    end
+
+    ...
+end
+```
+
+- Then finally, add the *view* for this action, located at `app/views/articles/index.html.erb`:
+
+```
+<h1>Listing articles</h1>
+
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Text</th>
+        <th></th>
+    </tr>
+
+    <% @articles.each do |article| %>
+        <tr>
+            <td><%= article.title %></td>
+            <td><%= article.text %></td>
+            <td><%= link_to 'Show', article_path(article) %></td>
+        </tr>
+    <% end %>    
+</table>
+```
+
+- Now, if you to http://localhost:3000/articles you will see a list of all the articles that you have created.
+
+---
+
+### Adding links:
+

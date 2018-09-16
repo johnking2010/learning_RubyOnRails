@@ -1,5 +1,10 @@
 class ArticlesController < ApplicationController
     
+    def index
+        # list ALL articles
+        @articles = Article.all
+    end
+
     def show
         # display!
         @article = Article.find(params[:id])
@@ -16,7 +21,7 @@ class ArticlesController < ApplicationController
         ### UNSAFE - yields security error:
         #@article = Article.new(params[:article])
         
-        ### SAFE - but better refactore out into the below private method
+        ### SAFE - but better refactored out into the below private method
         #@article = Article.new(params.require(:article).permit(:title, :text))
 
         @article = Article.new(article_params)
