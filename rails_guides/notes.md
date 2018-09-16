@@ -823,3 +823,19 @@ Now, add another link in `app/views/articles/new.html.erb` underneath the form, 
 
 <%= link_to 'Back', articles_path %>
 ```
+
+Finally, add a link to the `app/views/articles/show.html.erb` template to go back to the `index` action as well, so that people who are viewing a single article can go back and view the **whole** list again:
+
+```
+<p>
+    <strong>Title:</strong>
+    <%= @article.title %>
+</p>
+
+<p>
+    <strong>Text:</strong>
+    <%= @article.text %>
+</p>
+
+<%= link_to 'Back', articles_path %>
+```
